@@ -19,14 +19,14 @@ function triviaJson(trivia) {
             `
         }
 
-        for (trivia of triviaArr) {
-
-            choicesForm.innerHTML +=
-            `
-                <input type="radio" name="gender" value="male"> ${displayOptions(trivia)}<br>
-
-            `
-    }
+    //     for (trivia of triviaArr) {
+    //
+    //         choicesForm.innerHTML +=
+    //         `
+    //             <input type="radio" name="gender" value="male"> ${displayOptions(trivia)}<br>
+    //
+    //         `
+    // }
 
 }
 
@@ -35,15 +35,16 @@ function displayOptions(ansArray){
     const correctAnswer = ansArray.correct_answer
     choices.push(correctAnswer)
 
-    let counter = 1;
     // debugger
     return choices.map(ans => {
         return `
-        <input type="radio" id="option${++counter}" name="choice" value="${ans}">
-        <label for="option${++counter}">${ans}</label><br>
+        <form action="">
+        <input type="radio" id="" name="${ans}" value="${ans}">
+        <label for="">${ans}</label><br>
+        </form>
         `
     }).join(" ")
 }
 
-const checked = document.querySelector('input[name="choice"]:checked').value;
-console.log(checked)
+// const checked = document.querySelector('input[name="choice"]:checked').value;
+// console.log(checked)
