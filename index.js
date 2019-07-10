@@ -10,6 +10,7 @@ function fetchQ() {
 const triviaUl = document.querySelector('.trivia')
 const choicesForm = document.querySelector('.choices')
 const next = document.querySelector('.next')
+const score = document.querySelector('.score')
 
 let score = 0;
 ///// -------------  Event Litners ----------------- /////
@@ -19,59 +20,98 @@ next.addEventListener('click', nextQ)
 
 ///// -------------- Logic and Functions --------------- ///////
 
-function nextQ() {
-fetchQ().then(triviaJson)
-function triviaJson(trivia) {
-    // debugger
-    const triviaArr = trivia.results
-    for (trivia of triviaArr) {
-        triviaUl.innerHTML =
-            `
-            <h4>Question</h4>
-            <p>${trivia.question}</p>
-            <div class="radio-div">
-            ${displayOptions(trivia)}
-            </div>
-            `
-        }
-        choicesForm.prepend(triviaUl)
+var i = 0;
+// nextQ()
+// while (i < 3) {
+// //   
 
+  
 
-
-
-
-    choicesForm.addEventListener('submit', function(e, trivia) {
-        e.preventDefault()
-        const checked = document.querySelector('input[type=radio]:checked').value
-        
-     
+    function nextQ() {
         // debugger
-        if (checked === triviaArr[0].correct_answer) { 
-                 console.log("Correct")
-                 ++score
-             } else {
-                 console.log("incorrect") 
-             }
-             console.log("Score = " + score)
+        if (i < 4){
+            fetchQ().then(triviaJson)
+            i++
+        } else {
+            i = 0
+            console.log(score)
+            console.log('I hit max of 3')
+        }
+    }
+    
+    function triviaJson(trivia) {
+        // debugger
+        const triviaArr = trivia.results
+        for (trivia of triviaArr) {
+            triviaUl.innerHTML =
+                `
+                <h4>Question</h4>
+                <p>${trivia.question}</p>
+                <div class="radio-div">
+                ${displayOptions(trivia)}
+                </div>
+                `
+            }
+            choicesForm.prepend(triviaUl)
+
+
+        choicesForm.addEventListener('submit', function(e, trivia) {
+            e.preventDefault()
+            const checked = document.querySelector('input[type=radio]:checked').value
+            
         
-    })
-}
+            // debugger
+            if (checked === triviaArr[0].correct_answer) { 
+                    console.log("Correct")
+                    ++score
+                    nextQ()
+                } else {
+                    console.log("incorrect")
+                    nextQ() 
+                }
+                console.log("Score = " + score)
+            
+        })
+    }
+   
+//     i++;
+// }
+    
 
-}
 
 
 
+
+
+
+
+
+
+
+////--------------- flatten Array
+function flatten(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+      return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+    }, []);
+  }
 
 
 function displayOptions(ansArray){
-    const choices = ansArray.incorrect_answers
-    const correctAnswer = ansArray.correct_answer
-    choices.push(correctAnswer)
-
+    
+    const correctAndIncorrect = []
+    correctAndIncorrect.push(ansArray.incorrect_answers)
+    correctAndIncorrect.push(ansArray.correct_answer)
+    
+    // const choices = ansArray.incorrect_answers
+    // const correctAnswer = ansArray.correct_answer
+    // choices.push(correctAnswer)
+    const merge3 = flatten(correctAndIncorrect);
+    // shuffle(merge3)
+    // debugger
+    
     let counter = 1;
     let counter2 = 1;
-    // debugger
-    return choices.map(ans => {
+    return merge3.map(ans => {
         return `
             <input type="radio" class="${ans}" id="choice${++counter}" name="choice" value="${ans}">
             <label for="choice${++counter2}">${ans}</label><br>
