@@ -4,13 +4,14 @@ fetch('https://opentdb.com/api.php?amount=1&category=23')
 
 
 
+
 //// --------------  decleration --------------------/////
 const triviaUl = document.querySelector('.trivia')
 const choicesForm = document.querySelector('.choices')
+let allInputs = document.querySelectorAll("input")
 
 
-
-///// -------------  Event Litners ----------------- /////
+///// -------------  Event Listners ----------------- /////
 choicesForm.addEventListener('submit', checkedChoices)
 
 
@@ -28,8 +29,6 @@ function triviaJson(trivia) {
             <div class="radio-div">
             ${displayOptions(trivia)}
             </div>
-
-
             `
         }
 }
@@ -44,7 +43,7 @@ function displayOptions(ansArray){
     // debugger
     return choices.map(ans => {
         return `
-            <input type="radio" id="" name="choice" value="${ans}">
+            <input type="radio" id="${ans}" name="choice" value="${ans}">
             <label for="">${ans}</label><br>
         `
     }).join(" ")
@@ -55,27 +54,8 @@ function displayOptions(ansArray){
 ///////// ----------- Callbacks --------------- //////////////
 
 function checkedChoices(e) {
-    e.preventDefault()
+    // e.preventDefault()
+    var arr = document.querySelector("input[type=radio]:checked").value
     debugger
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const checked = document.querySelector('input[name="choice"]:checked').value;
-// console.log(checked)
