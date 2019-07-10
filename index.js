@@ -6,6 +6,7 @@ function fetchQ() {
 
 
 
+
 //// --------------  decleration --------------------/////
 const triviaUl = document.querySelector('.trivia')
 const choicesForm = document.querySelector('.choices')
@@ -133,17 +134,17 @@ function displayOptions(ansArray){
 ///////// ----------- Callbacks --------------- //////////////
 
 // function checkedChoices(e) {
-    
+
 //     e.preventDefault()
 //    const checked = document.querySelector('input[type=radio]:checked').value
 //     fetchQ().then((trivia) => {
-        
+
 //         debugger
 //         if (checked === trivia.results[0].correct_answer) {
-            
+
 //             console.log("Correct")
 //         } else {
-//             console.log("incorrect") 
+//             console.log("incorrect")
 //         }
 //     })
 // }
