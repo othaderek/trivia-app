@@ -10,7 +10,8 @@ function fetchQ() {
 const triviaUl = document.querySelector('.trivia')
 const choicesForm = document.querySelector('.choices')
 const next = document.querySelector('.next')
-const score = document.querySelector('.score')
+const scoreDiv = document.querySelector('.score')
+const submitBtn = document.querySelector('#submit-btn')
 
 let score = 0;
 ///// -------------  Event Litners ----------------- /////
@@ -26,18 +27,25 @@ var i = 0;
 // //   
 
   
-
+////// ------------ 
     function nextQ() {
         // debugger
         if (i < 4){
+            // scoreDiv.textContent = '' 
             fetchQ().then(triviaJson)
             i++
         } else {
+            triviaUl.innerHTML = ''
+            scoreDiv.textContent = score
             i = 0
+            submitBtn.remove()
             console.log(score)
             console.log('I hit max of 3')
         }
     }
+
+
+
     
     function triviaJson(trivia) {
         // debugger
@@ -66,6 +74,7 @@ var i = 0;
                     ++score
                     nextQ()
                 } else {
+                    
                     console.log("incorrect")
                     nextQ() 
                 }
