@@ -5,13 +5,15 @@ var i = 1;
 let anweredQ = [];
 let incorrectQ = [];
 let usernname;
+let category;
+let numberOfQestions;
 
 console.log(usernname)
 
 
 //// ------------- Fetch ------------------ ////
 function fetchQ() {
-    return  fetch('https://opentdb.com/api.php?amount=1&category=23')
+    return  fetch(`https://opentdb.com/api.php?amount=1&category=${category}`)
     .then(res => res.json())
 }
 
@@ -30,6 +32,7 @@ const correctQDiv = document.querySelector('.correct-div')
 const incorrectQDiv = document.querySelector('.incorrect-div')
 const userName = document.querySelector('input[name=user-name]')
 const usernameDiv = document.querySelector('.usernameDiv')
+const category_number_q_options = document.querySelector('.trvia-category-q-number')
 const newButton = `
 <button class="next">Play</button>
 `
@@ -45,8 +48,10 @@ startGame.addEventListener('click', nextQ)
 
 function nextQ() {
     usernname = userName.value
+    category = parseInt(document.querySelector('input[name=category]:checked').value)
+    numberOfQestions = parseInt(document.querySelector('input[name=number]:checked').value)
     // debugger
-    if (i <= 4){
+    if (i <= numberOfQestions){
         i++
         scoreDiv.textContent = ''
         fetchQ().then(triviaJson)
@@ -73,6 +78,7 @@ incorrectQDiv.style.visibility = 'hidden';
         correctQDiv.style.visibility = 'hidden';
         incorrectQDiv.style.visibility = 'hidden';
         usernameDiv.style.visibility = 'hidden';
+        category_number_q_options.style.visibility = 'hidden';
         // debugger
         const triviaArr = trivia.results
         // debugger
