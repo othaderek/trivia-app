@@ -6,9 +6,9 @@ let anweredQ = [];
 let incorrectQ = [];
 let usernname;
 let category;
-let numberOfQestions;
+let numberOfQuestions;
 
-console.log(usernname)
+
 
 
 //// ------------- Fetch ------------------ ////
@@ -16,8 +16,6 @@ function fetchQ() {
     return  fetch(`https://opentdb.com/api.php?amount=1&category=${category}`)
     .then(res => res.json())
 }
-
-
 
 //// --------------  decleration --------------------/////
 const triviaUl = document.querySelector('.trivia')
@@ -32,15 +30,15 @@ const correctQDiv = document.querySelector('.correct-div')
 const incorrectQDiv = document.querySelector('.incorrect-div')
 const userName = document.querySelector('input[name=user-name]')
 const usernameDiv = document.querySelector('.usernameDiv')
-const category_number_q_options = document.querySelector('.trvia-category-q-number')
-const newButton = `
-<button class="next">Play</button>
-`
+const categoryDiv = document.querySelector('.trvia-category')
+const numberDiv = document.querySelector('.number-of-quastions')
+const trviaDiv = document.querySelector('.trivia-div')
+const choiceDiv = document.querySelector('.choices-div')
+const welcome = document.querySelector('.welcome-h1')
 
 
 ///// ------------  Event Listner ---------------- ////////
 startGame.addEventListener('click', nextQ)
-
 
 
 
@@ -49,9 +47,9 @@ startGame.addEventListener('click', nextQ)
 function nextQ() {
     usernname = userName.value
     category = parseInt(document.querySelector('input[name=category]:checked').value)
-    numberOfQestions = parseInt(document.querySelector('input[name=number]:checked').value)
+    numberOfQuestions = parseInt(document.querySelector('input[name=number]:checked').value)
     // debugger
-    if (i <= numberOfQestions){
+    if (i <= numberOfQuestions){
         i++
         scoreDiv.textContent = ''
         fetchQ().then(triviaJson)
@@ -62,9 +60,14 @@ function nextQ() {
 }
 
 
+////// ------ hidden comtents while playing the game ----------- ////////
+correctQDiv.style.display = "none";
+incorrectQDiv.style.display = "none";
+trviaDiv.style.display = "none";
+choiceDiv.style.display = "none";
+scoreDiv.style.display = "none";
 
-correctQDiv.style.visibility = 'hidden';
-incorrectQDiv.style.visibility = 'hidden';
+// debugger
 
 ////-------------- fetch and dom appending is happening here ------------------/////////
     function triviaJson(trivia) {
@@ -73,12 +76,18 @@ incorrectQDiv.style.visibility = 'hidden';
 
         answeredQul.innerHTML = '';
         incorrectQul.innerHTML = '';
+        welcome.textContent = `Hi! ${usernname}`;
+        // welcome.style.font-size = 12;
 
-        startGame.style.visibility = 'hidden';
-        correctQDiv.style.visibility = 'hidden';
-        incorrectQDiv.style.visibility = 'hidden';
-        usernameDiv.style.visibility = 'hidden';
-        category_number_q_options.style.visibility = 'hidden';
+        choiceDiv.style.display = "block";
+
+        startGame.style.display = "none";
+        correctQDiv.style.display = "none";
+        incorrectQDiv.style.display = "none";
+        usernameDiv.style.display = "none";
+        categoryDiv.style.display = "none";
+        numberDiv.style.display = "none";
+        buttonDiv.style.display = "none";
         // debugger
         const triviaArr = trivia.results
         // debugger
@@ -98,14 +107,16 @@ incorrectQDiv.style.visibility = 'hidden';
 
 
 
-
-
     ///// ------------- Report Page ------------------- //////
 function reportPage() {
     i = 0
     
-    scoreDiv.innerHTML = `<h2>Game Over ${usernname} - You have answered ${score} questions correct!</h2>`
+    scoreDiv.innerHTML = `
+    <h2>Score: ${score}</h2>
+    `
     const li = document.createElement('li')
+    welcome.textContent = `Thank you for playing ${usernname}!`;
+
 
     for (q of anweredQ) {
             // debugger
@@ -118,9 +129,13 @@ function reportPage() {
 
     // scoreDiv.appendChild(li)
     triviaUl.remove();
-    startGame.style.visibility = 'visible';
-    correctQDiv.style.visibility = 'visible';
-    incorrectQDiv.style.visibility = 'visible';
+    startGame.style.display = 'block';
+    correctQDiv.style.display = 'block';
+    incorrectQDiv.style.display = 'block';
+    scoreDiv.style.display = "block";
+
+    choiceDiv.style.display = "none";
+    
     score = 0;
     anweredQ = [];
     
@@ -129,19 +144,12 @@ function reportPage() {
 }
 
 
-
-
-
 ////--------------- flatten Array --------------- ////////
 function flatten(arr) {
     return arr.reduce(function (flat, toFlatten) {
       return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
     }, []);
   }
-
-
-
-
 
   //////// ------------ The correct and Incorrect choices are Joined to one array and are slapped to the dom ---------- ////////////
 function displayOptions(ansArray){
@@ -168,7 +176,7 @@ function displayOptions(ansArray){
 
 
 
-///////// ----------- Callbacks --------------- //////////////
+///////// ----------- Compare if the choice is correct or not --------------- //////////////
 
  choicesForm.addEventListener('submit', function(e) {
             console.log("submit happened")
@@ -220,29 +228,3 @@ function displayOptions(ansArray){
 
 
 
-
-
-// const checked = document.querySelector('input[name="choice"]:checked').value;
-// console.log(checked)
-
-
-
-// function triviaJson(){
-//     fetchQ().then(trivia => function(trivia){
-//         // debugger
-//         console.log(trivia);
-//         const triviaArr = trivia.results
-//     for (trivia of triviaArr) {
-//         triviaUl.innerHTML +=
-//             `
-//             <h4>Question</h4>
-//             <p>${trivia.question}</p>
-//             <div class="radio-div">
-//             ${displayOptions(trivia)}
-//             </div>
-//             `
-//         }
-//         choicesForm.prepend(triviaUl)
-//     })
-// }
-// triviaJson()
