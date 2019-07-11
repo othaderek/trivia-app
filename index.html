@@ -4,33 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    <div><ol class="trivia"></ol></div>
+    <div class="container">
+        <div class="usernameDiv">
+            <label for="user-name">User Name</label>
+            <input name="user-name" id="user-name" type="text">
+        </div>
 
-    <form class="choices">
-    <ul class="choices">
-
-    <!-- <ul class="choices">
-<<<<<<< HEAD
-    div
-    </ul> -->
-
-    <div><h1 class="score"></h1></div>
-
-
-    </ul>
-
-    <form class="choices">
-
-        <input id="submit-btn" type="submit" value="Submit">
-    </form>
-
-    <button class="next">Play</button>
+        <div>
+            <ol class="trivia"></ol>
+        </div>
+        
+        <form class="choices">
+        </form>
 
 
-    <button class="next">Next</button>
+        <div class="score">  
+        </div>
+        
+
+        <div class="correct-div">
+            <h4>You have correctly answered the following quastions!</h4>
+                <ul class="correctQuestions">
+            </ul>
+        </div>
+
+
+        <div class="incorrect-div">
+            <h4>You answered the following quastions wrong!</h4>
+                <ul class="incorrectQuestions">
+            </ul>
+        </div>
+
+
+        <div class="button-div">
+            <button class="next">Play</button>
+        </div>
+
+    <!-- <button class="play-again">Play Again</button> -->
+    </div>
+
+    
 
     <script src="index.js"></script>
 </body>
