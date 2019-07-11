@@ -1,11 +1,8 @@
 
 function fetchQ() {
-    return  fetch('https://opentdb.com/api.php?amount=1&category=23')
+    return  fetch('https://opentdb.com/api.php?amount=1')
     .then(res => res.json())
 }
-
-
-
 
 //// --------------  decleration --------------------/////
 const triviaUl = document.querySelector('.trivia')
@@ -13,8 +10,9 @@ const choicesForm = document.querySelector('.choices')
 const next = document.querySelector('.next')
 
 let score = 0;
+let count = 0;
 ///// -------------  Event Litners ----------------- /////
-// choicesForm.addEventListener('submit', checkedChoices)
+choicesForm.addEventListener('submit', checkedChoices)
 
 next.addEventListener('click', nextQ)
 
@@ -38,9 +36,6 @@ function triviaJson(trivia) {
         choicesForm.prepend(triviaUl)
 
 
-
-
-
     choicesForm.addEventListener('submit', function(e, trivia) {
         e.preventDefault()
         const checked = document.querySelector('input[type=radio]:checked').value
@@ -52,6 +47,8 @@ function triviaJson(trivia) {
                  ++score
              } else {
                  console.log("incorrect")
+
+                 // debugger
              }
              console.log("Score = " + score)
 
@@ -59,10 +56,6 @@ function triviaJson(trivia) {
 }
 
 }
-
-
-
-
 
 function displayOptions(ansArray){
     const choices = ansArray.incorrect_answers
@@ -82,75 +75,47 @@ function displayOptions(ansArray){
 
 
 
-///////// ----------- Callbacks --------------- //////////////
+/////// ----------- Callbacks --------------- //////////////
 
-// function checkedChoices(e) {
+function checkedChoices(e) {
 
-//     e.preventDefault()
-//    const checked = document.querySelector('input[type=radio]:checked').value
-//     fetchQ().then((trivia) => {
+    e.preventDefault()
+   const checked = document.querySelector('input[type=radio]:checked').value
+    fetchQ().then((trivia) => {
 
-//         debugger
-//         if (checked === trivia.results[0].correct_answer) {
+        // debugger
+        if (checked === trivia.results[0].correct_answer) {
 
-//             console.log("Correct")
-//         } else {
-//             console.log("incorrect")
-//         }
-//     })
-// }
+            console.log("Correct")
+        } else {
+            console.log("incorrect")
+        }
+    })
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//
+//
 // const checked = document.querySelector('input[name="choice"]:checked').value;
 // console.log(checked)
+//
 
 
-
-// function triviaJson(){
-//     fetchQ().then(trivia => function(trivia){
-//         // debugger
-//         console.log(trivia);
-//         const triviaArr = trivia.results
-//     for (trivia of triviaArr) {
-//         triviaUl.innerHTML +=
-//             `
-//             <h4>Question</h4>
-//             <p>${trivia.question}</p>
-//             <div class="radio-div">
-//             ${displayOptions(trivia)}
-//             </div>
-//             `
-//         }
-//         choicesForm.prepend(triviaUl)
-//     })
-// }
-// triviaJson()
+function triviaJson(){
+    fetchQ().then(trivia => function(trivia){
+        // debugger
+        console.log(trivia);
+        const triviaArr = trivia.results
+    for (trivia of triviaArr) {
+        triviaUl.innerHTML +=
+            `
+            <h4>Question</h4>
+            <p>${trivia.question}</p>
+            <div class="radio-div">
+            ${displayOptions(trivia)}
+            </div>
+            `
+        }
+        choicesForm.prepend(triviaUl)
+    })
+}
+triviaJson()
