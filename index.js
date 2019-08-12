@@ -7,6 +7,9 @@ let incorrectQ = [];
 let usernname;
 let category;
 let numberOfQuestions;
+let theCorrectAnswer = [];
+let yes = {}
+let nop = {}
 
 
 
@@ -35,10 +38,16 @@ const numberDiv = document.querySelector('.number-of-quastions')
 const trviaDiv = document.querySelector('.trivia-div')
 const choiceDiv = document.querySelector('.choices-div')
 const welcome = document.querySelector('.welcome-h1')
+const reload = document.querySelector('.page-reload')
+const reloadDiv = document.querySelector('.reload-div')
+
+const categoryNumberContainer = document.querySelector('.category-number-container')
+const incorrectLi = document.querySelector('.incorrecLI')
 
 
 ///// ------------  Event Listner ---------------- ////////
 startGame.addEventListener('click', nextQ)
+reload.addEventListener('click', reloadPage)
 
 
 
@@ -61,11 +70,12 @@ function nextQ() {
 
 
 ////// ------ hidden comtents while playing the game ----------- ////////
-correctQDiv.style.display = "none";
+// correctQDiv.style.display = "none";
 incorrectQDiv.style.display = "none";
 trviaDiv.style.display = "none";
 choiceDiv.style.display = "none";
 scoreDiv.style.display = "none";
+reloadDiv.style.display = "none";
 
 // debugger
 
@@ -74,20 +84,22 @@ scoreDiv.style.display = "none";
         // startGame.remove()
         globalTrivia = trivia;
 
-        answeredQul.innerHTML = '';
+        // answeredQul.innerHTML = '';
         incorrectQul.innerHTML = '';
-        welcome.textContent = `Hi! ${usernname}`;
+        welcome.textContent = `Let's go! ${usernname}`;
         // welcome.style.font-size = 12;
 
         choiceDiv.style.display = "block";
 
         startGame.style.display = "none";
-        correctQDiv.style.display = "none";
+        // correctQDiv.style.display = "none";
         incorrectQDiv.style.display = "none";
         usernameDiv.style.display = "none";
         categoryDiv.style.display = "none";
         numberDiv.style.display = "none";
         buttonDiv.style.display = "none";
+        reloadDiv.style.display = "none";
+
         // debugger
         const triviaArr = trivia.results
         // debugger
@@ -105,36 +117,57 @@ scoreDiv.style.display = "none";
         choicesForm.prepend(triviaUl)
     }
 
-
+////// -------------- check if object is empty --------------------  /////
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
 
     ///// ------------- Report Page ------------------- //////
 function reportPage() {
     i = 0
+   
+    welcome.textContent = `Thank you for playing ${usernname}!`;
     
     scoreDiv.innerHTML = `
     <h2>Score: ${score}</h2>
     `
-    const li = document.createElement('li')
-    welcome.textContent = `Thank you for playing ${usernname}!`;
+    
 
-
-    for (q of anweredQ) {
-            // debugger
-        answeredQul.innerHTML += `<li>${q}</li>`
+    if(isEmpty(nop)) {
+        // Object is empty (Would return true in this example)
+        incorrectQDiv.style.display = "none";
+    } else {
+        // Object is NOT empty
+        Object.entries(nop).forEach(
+            function([key, value]) {
+                console.log(key, value)
+                incorrectQul.innerHTML += `<li>${key}</li>`
+                incorrectQul.innerHTML += `<p>Correct Answer: ${value}</p>`
+            } 
+        );
     }
 
-    for (q of incorrectQ) {
-        incorrectQul.innerHTML += `<li>${q}</li>`
-    }
+
+
+
+    // incorrectQDiv.appendChild(yesUl)
+
+   
 
     // scoreDiv.appendChild(li)
     triviaUl.remove();
     startGame.style.display = 'block';
-    correctQDiv.style.display = 'block';
+    // correctQDiv.style.display = 'block';
     incorrectQDiv.style.display = 'block';
     scoreDiv.style.display = "block";
+    reloadDiv.style.display = "block";
 
     choiceDiv.style.display = "none";
+    categoryNumberContainer.style.display = "none";
     
     score = 0;
     anweredQ = [];
@@ -151,6 +184,16 @@ function flatten(arr) {
     }, []);
   }
 
+//// ------------- Shuffle Array ---------------- ///////
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+      [array[i], array[j]] = [array[j], array[i]]; // swap elements
+    }
+  }
+
+
+
   //////// ------------ The correct and Incorrect choices are Joined to one array and are slapped to the dom ---------- ////////////
 function displayOptions(ansArray){
     
@@ -158,13 +201,15 @@ function displayOptions(ansArray){
     correctAndIncorrect.push(ansArray.incorrect_answers)
     correctAndIncorrect.push(ansArray.correct_answer)
     
-    const merge3 = flatten(correctAndIncorrect);
+    const mergedCorrectAndIncorrect = flatten(correctAndIncorrect);
 
-    
+    // debugger
+    shuffle(mergedCorrectAndIncorrect)
+
     let counter = 1;
     let counter2 = 1;
     
-    return merge3.map(ans => {
+    return mergedCorrectAndIncorrect.map(ans => {
         return `
             <input type="radio" class="${ans}" id="choice${++counter}" name="choice" value="${ans}">
             <label for="choice${++counter2}">${ans}</label><br>
@@ -190,11 +235,14 @@ function displayOptions(ansArray){
                     console.log("Correct")
                     score++
                     anweredQ.push(globalTrivia.results[0].question)
-                    // debugger
+                    theCorrectAnswer.push(globalTrivia.results[0].question)
+                    
+                    yes[globalTrivia.results[0].question] = globalTrivia.results[0].correct_answer;
+                    
                     nextQ()
                 } else {
-                    // debugger
-                    incorrectQ.push(globalTrivia.results[0].question)
+                    incorrectQ.push(globalTrivia.results[0].correct_answer)
+                    nop[globalTrivia.results[0].question] = globalTrivia.results[0].correct_answer;
                     console.log("incorrect")
                     nextQ() 
                 }
@@ -205,7 +253,11 @@ function displayOptions(ansArray){
 
 
 
+//// ------------ Page Reload -------------- /////
 
+function reloadPage(e) {
+    location.reload()
+}
 
 
 

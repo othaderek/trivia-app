@@ -36,7 +36,7 @@ input#user-name {
     font-size: 15px;
 }
 
-div.usernameDiv, div.welcome, div.trvia-category, div.number-of-quastions, div.button-div, div.choices-div, div.score, div.correct-div, div.incorrect-div, div.category-number-container {
+div.usernameDiv, div.welcome, div.trvia-category, div.number-of-quastions, div.button-div, div.choices-div, div.score, div.correct-div, div.incorrect-div, div.category-number-container, div.reload-div{
 
     border-radius: 5px;
     background-color: #f2f2f2;
@@ -47,7 +47,7 @@ label.name-label {
     text-align: left;
 }
 
-button.next, input#submit-btn {
+button.next, input#submit-btn, button.page-reload {
     
         width: 100%;
         background-color: #4CAF50;
@@ -60,7 +60,7 @@ button.next, input#submit-btn {
         font-size: 1em;
 }
 
-button.next:hover {
+button.next:hover, button.page-reload:hover {
     background-color: #45a049;
   }
 
@@ -148,3 +148,8 @@ button.next:hover {
   form.choice-div {
       width: 200px;
   } */
+
+  ul.incorrectQuestions p {
+    font-style: italic;
+    font-weight: bold;
+  }
